@@ -1,6 +1,8 @@
 package com.example.quiz_game
 
 import WhoAmI
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -9,23 +11,26 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-
+import java.util.jar.Attributes
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var celebImg : ImageView
-    lateinit var  gameManager : GameManager
+    lateinit var gameManager : GameManager
     lateinit var people : List<WhoAmI>
     lateinit var btnSinger : Button
     lateinit var btnModel : Button
     lateinit var btnActor : Button
     lateinit var btnAthlete : Button
+    lateinit var clickSound : SoundPool
+    var clickSoundId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        loudSoundPool()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -38,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         btnSinger = findViewById<Button>(R.id.btnSinger)
         btnSinger.setOnClickListener{
+            clickSound.play(clickSoundId, 1.0f,1.0f,0,0,1.0f)
             val isCorrect = gameManager.checkAnswer("Singer")
             gameManager.moveToNextQ()
             refreshGame()
@@ -45,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         btnModel = findViewById<Button>(R.id.btnModel)
         btnModel.setOnClickListener{
+            clickSound.play(clickSoundId, 1.0f,1.0f,0,0,1.0f)
             val isCorrect = gameManager.checkAnswer("Model")
             gameManager.moveToNextQ()
             refreshGame()
@@ -52,12 +59,14 @@ class MainActivity : AppCompatActivity() {
 
         btnActor = findViewById<Button>(R.id.btnActor)
         btnActor.setOnClickListener{
+            clickSound.play(clickSoundId, 1.0f,1.0f,0,0,1.0f)
             val isCorrect = gameManager.checkAnswer("Actor")
             gameManager.moveToNextQ()
             refreshGame()}
 
         btnAthlete = findViewById<Button>(R.id.btnAthlete)
         btnAthlete.setOnClickListener{
+            clickSound.play(clickSoundId, 1.0f,1.0f,0,0,1.0f)
             val isCorrect = gameManager.checkAnswer("Athlete")
             gameManager.moveToNextQ()
             refreshGame()}
@@ -72,5 +81,29 @@ class MainActivity : AppCompatActivity() {
 
         val currCeleb = people[gameManager.index]
         celebImg.setImageResource(currCeleb.image)
+    }
+
+    fun loudSoundPool(){
+        val attributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        clickSound = SoundPool.Builder()
+            .setMaxStreams(5)
+            .setAudioAttributes(attributes)
+            .build()
+
+         clickSoundId = clickSound.load(this, R.raw.low_battery_charge, 1)
+    }
+
+    private fun playClickSound() {
+        // volume range: 0.0 to 1.0
+        clickSound.play(clickSoundId, 1f, 1f, 1, 0, 1f)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        clickSound.release()
     }
 }
