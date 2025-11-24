@@ -1,0 +1,57 @@
+package com.example.quiz_game
+
+import WhoAmI
+
+class GameManager {
+
+    var points: Int = 0
+    var index : Int = 0
+
+    private lateinit var people: List<WhoAmI>
+
+    fun generatePeople() : List<WhoAmI> {
+        val people = ArrayList<WhoAmI>()
+
+        people.add(WhoAmI("Ariana Grande",R.drawable.ariana_grande, true,false,false,false))
+        people.add(WhoAmI("Rami Malek", R.drawable.rami_malek,false,false,false,true))
+        people.add(WhoAmI("Bob Odenkirk", R.drawable.bob_odenkirk, false,false,false,true))
+        people.add(WhoAmI("Cristiano Ronaldo", R.drawable.crisitano_ronaldo, false, false,true,false))
+        people.add(WhoAmI("Kylian Mbappe", R.drawable.kylian_mbappe,false, false,true,false))
+        people.add(WhoAmI("Don Toliver", R.drawable.don_toliver, true,false,false,false))
+        people.add(WhoAmI("Alex Pereira", R.drawable.alex_perrira, false, false,true,false))
+        people.add(WhoAmI("Jon Jones", R.drawable.jon_jones, false, false,true,false))
+        people.add(WhoAmI("Gigi Hadid", R.drawable.gigi_hadid,false,true,false,false))
+        people.add(WhoAmI("Jermey Meeks", R.drawable.jermey_meeks,false,true,false,false))
+        people.add(WhoAmI("BlackBear",R.drawable.blackbear, true,false,false,false))
+        people.add(WhoAmI("Rick Sanchez", R.drawable.rick_sanchez,false,false,false,true))
+        people.add(WhoAmI("Aaron Paul", R.drawable.aaron_paul,false,false,false,true))
+        people.add(WhoAmI("Cillian Murphy", R.drawable.cillian_murphy,false,false,false,true))
+
+        return people
+    }
+
+    fun checkAnswer(answer : String): Boolean{
+        val currCeleb = people[index]
+        val isCorrect : Boolean
+        if (currCeleb.equals("Singer")){
+            isCorrect = currCeleb.isSinger
+        }
+        else if (currCeleb.equals("Model")){
+            isCorrect = currCeleb.isModel
+        }
+        else if (currCeleb.equals("Athlete")){
+            isCorrect = currCeleb.isAthlete
+        }
+        else {
+            isCorrect = currCeleb.isActor
+        }
+        if (isCorrect){
+            points++
+        }
+        return false
+    }
+
+    fun moveToNextQ(){index++}
+
+    fun isGameOver(): Boolean {return index > people.size}
+}
