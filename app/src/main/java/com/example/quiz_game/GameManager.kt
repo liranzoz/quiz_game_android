@@ -6,6 +6,7 @@ class GameManager {
 
     var points: Int = 0
     var index : Int = 0
+    var lifeCounter : Int = 3
     lateinit var people : List<WhoAmI>
 
     fun generatePeople() : List<WhoAmI> {
@@ -47,11 +48,13 @@ class GameManager {
         }
         if (isCorrect){
             points++
+        } else {
+            lifeCounter--
         }
         return false
     }
 
     fun moveToNextQ(){index++}
 
-    fun isGameOver(): Boolean {return index > people.size}
+    fun isGameOver(): Boolean {return index > people.size || lifeCounter == 0}
 }
