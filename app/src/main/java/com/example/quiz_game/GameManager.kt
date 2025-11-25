@@ -4,10 +4,21 @@ import WhoAmI
 
 class GameManager {
 
-    var points: Int = 0
-    var index : Int = 0
-    var lifeCounter : Int = 3
-    lateinit var people : List<WhoAmI>
+    private var points: Int = 0
+    private var index : Int = 0
+    private var lifeCounter : Int = 3
+    lateinit private var people : List<WhoAmI>
+
+    fun getPoints() : Int{
+        return points
+    }
+    fun getIndex() : Int{
+        return index
+    }
+    fun getLifeCounter() : Int{
+        return lifeCounter
+    }
+
 
     fun generatePeople() : List<WhoAmI> {
         val tempPeople = ArrayList<WhoAmI>()
@@ -33,14 +44,14 @@ class GameManager {
 
     fun checkAnswer(answer : String): Boolean{
         val currCeleb = people[index]
-        val isCorrect : Boolean
-        if (currCeleb.equals("Singer")){
+        var isCorrect : Boolean = false
+        if (answer == "Singer"){
             isCorrect = currCeleb.isSinger
         }
-        else if (currCeleb.equals("Model")){
+        else if (answer == "Model"){
             isCorrect = currCeleb.isModel
         }
-        else if (currCeleb.equals("Athlete")){
+        else if (answer == "Athlete"){
             isCorrect = currCeleb.isAthlete
         }
         else {
@@ -51,7 +62,7 @@ class GameManager {
         } else {
             lifeCounter--
         }
-        return false
+        return isCorrect
     }
 
     fun moveToNextQ(){index++}
